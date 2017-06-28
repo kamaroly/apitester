@@ -35,7 +35,7 @@
 
 @if(isset($apiResponse))
 			<code>
-				{{ $apiResponse }}
+				<?php dump($apiResponse) ?>
 			</code>
 @endif
 			<button type="submit" class="btn btn-lg btn-success col-12">
