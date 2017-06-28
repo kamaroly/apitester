@@ -38,7 +38,19 @@ Route::post('submit/request',['as'=>'submit.request',function(){
 		try
 		{
 			$client			= new Client();
-			$apiResponse	= $client->request('POST',$url,$requestData);	
+			$apiResponse	= $client->request('POST',$url,$requestData);
+			$apiResponse    = trim($apiResponse->getBody()->getContents())
+		}
+		catch(ClientException $ex){			
+			$apiResponse    = trim($ex->getBody()->getContents())
+		}
+		catch(RequestException $ex)
+		{
+			$apiResponse    = trim($ex->getBody()->getContents())
+		}
+		catch(ServerException $ex)
+		{
+			$apiResponse    = trim($ex->getBody()->getContents())
 		}
 		catch(\Exception $ex){
 			$apiResponse = $ex->getMessage();
