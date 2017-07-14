@@ -72,7 +72,16 @@ class ResubscriptionController extends CanalApiController
     	// return failed response to havanao from here
 		$code= '400';
 		$status= 'error';
-		$message ='Unknown smartcard';
+		$message ='Unknown error';
+
+		// If the response comes from canal then we will extract message from 
+		// Canal error
+		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
+		{ 
+			// This is a canal response extract message
+			preg_match_all('/errorLabel>(.*?)\/errorLabel>/s', $accountResponse, $messages);
+			$message = $messages[1];
+		}
 
 		$checkAccountResponse = [
 									'code' 		=> $code,
@@ -85,19 +94,12 @@ class ResubscriptionController extends CanalApiController
         		->header('Content-Type', 'application/json');						
 		}
 
-		else{
-
 		// Extract token from account response				
 
-		preg_match_all('/<tokenId>(.*?)<\/tokenId>/s', $xml, $matches);
-
-		//HTML array in $matches[1]
-		$token=($matches[1]);
+		preg_match_all('/<tokenId>(.*?)<\/tokenId>/s', $accountResponse, $tokens);
 
 		// use correct token from check accounts
-		$canalRequest = str_replace('CANAL_TOKEN', $token, $canalRequest);
-		
-		}
+		$canalRequest = str_replace('CANAL_TOKEN', $tokens[1], $canalRequest);
 
 		// We have check account now send resubscriptiont
 		$subscriptionResponse = $this->call($canalRequest);
@@ -108,7 +110,7 @@ class ResubscriptionController extends CanalApiController
 	    $code = '400';
 	    $status = 'ERROR';
 
-	    if (strpos($subscriptionResponse, 'SUCCESS') !== FALSE) {
+	    if (strpos($subscriptionResponse, '<returnCode>0</returnCode>') !== FALSE) {
 		    $code = '200';
 		    $status = 'OK';
 	    }
