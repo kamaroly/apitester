@@ -63,13 +63,16 @@ class ResubscriptionController extends CanalApiController
 
 		// Check account
 		$accountResponse = $this->call($checkAccountRequest);
-
+	    
+		// Make sure all HTML entities are well decoded
+	        $accountResponse = htmlspecialchars_decode($accountResponse); 
+	    
 		Log::info($accountResponse);
 		 // 4. ANALYSE CANAL RESPONSE
 
 		if (strpos($accountResponse, '<returnCode>0</returnCode>') === FALSE) {
-    	// We could not find the return code of 0 which is successful
-    	// return failed response to havanao from here
+    		// We could not find the return code of 0 which is successful
+    		// return failed response to havanao from here
 		$code= '400';
 		$status= 'error';
 		$message ='Unknown error';
@@ -104,7 +107,9 @@ class ResubscriptionController extends CanalApiController
 		// We have check account now send resubscriptiont
 		$subscriptionResponse = $this->call($canalRequest);
         
-        Log::info($subscriptionResponse);
+	    	// Make sure all HTML entities are well decoded
+	       $subscriptionResponse = htmlspecialchars_decode($subscriptionResponse); 
+               Log::info($subscriptionResponse);
 
 	    // 4. ANALYSE CANAL RESPONSE
 	    $code = '400';
