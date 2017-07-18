@@ -63,7 +63,8 @@ class ResubscriptionController extends CanalApiController
 
 		// Check account
 		$accountResponse = $this->call($checkAccountRequest);
-	    
+	    	$accountResponse = htmlspecialchars_decode($accountResponse);
+
 		// Make sure all HTML entities are well decode
 		Log::info($accountResponse);
 		 // 4. ANALYSE CANAL RESPONSE
@@ -74,7 +75,7 @@ class ResubscriptionController extends CanalApiController
 		$code= '400';
 		$status= 'error';
 		$message ='Unknown error';
-
+ 		// dd(htmlspecialchars_decode($accountResponse))htmlspecialchars_decode($accountResponse);
 		// If the response comes from canal then we will extract message from 
 		// Canal error
 		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
@@ -91,16 +92,16 @@ class ResubscriptionController extends CanalApiController
 								];
 
 
-        return response($checkAccountResponse, 400)
+        	return response($checkAccountResponse, 400)
         		->header('Content-Type', 'application/json');						
 		}
+		
 
 		// Extract token from account response				
-
 		preg_match_all('/<tokenId>(.*?)<\/tokenId>/s', $accountResponse, $tokens);
 
 		// use correct token from check accounts
-		$canalRequest = str_replace('CANAL_TOKEN', $tokens[1], $canalRequest);
+		$canalRequest = str_replace('CANAL_TOKEN', $tokens[1][0], $canalRequest);
 
 		// We have check account now send resubscriptiont
 		$subscriptionResponse = $this->call($canalRequest);
