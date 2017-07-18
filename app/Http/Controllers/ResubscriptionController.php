@@ -120,10 +120,10 @@ class ResubscriptionController extends CanalApiController
 		    $message = 'ERROR occured while doing transaction';
 		 // If the response comes from canal then we will extract message from 
 		// Canal error
-		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
+		if (strpos($subscriptionResponse, '<errorLabel>') !== FALSE)
 		{ 
 			// This is a canal response extract message
-			preg_match_all('/<errorLabel>(.*?)<\/errorLabel>/s', $accountResponse, $messages);
+			preg_match_all('/<errorLabel>(.*?)<\/errorLabel>/s', $subscriptionResponse, $messages);
 			$message = $messages[1];
 		}
 	    }
