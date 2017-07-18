@@ -75,7 +75,7 @@ class ResubscriptionController extends CanalApiController
 		$code= '400';
 		$status= 'error';
 		$message ='Unknown error';
- 		// dd(htmlspecialchars_decode($accountResponse))htmlspecialchars_decode($accountResponse);
+ 		
 		// If the response comes from canal then we will extract message from 
 		// Canal error
 		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
@@ -86,10 +86,10 @@ class ResubscriptionController extends CanalApiController
 		}
 
 		$checkAccountResponse = [
-									'code' 		=> $code,
-									'status' 	=> $status,
-									'message'   => $message
-								];
+					'code' 		=> $code,
+					'status' 	=> $status,
+					'message'   => $message
+					];
 
 
         	return response($checkAccountResponse, 400)
@@ -111,19 +111,24 @@ class ResubscriptionController extends CanalApiController
                Log::info($subscriptionResponse);
 
 	    // 4. ANALYSE CANAL RESPONSE
-	    $code = '400';
-	    $status = 'ERROR';
-
-	    if (strpos($subscriptionResponse, '<returnCode>0</returnCode>') !== FALSE) {
-		    $code = '200';
-		    $status = 'OK';
+	    $code = '200';
+	    $status = 'OK';
+	    $message = 'Thank you for paying '.$request->amount.' to Canal';
+	    if (strpos($subscriptionResponse, '<returnCode>0</returnCode>') === FALSE) {
+		    $code = '400';
+		    $status = 'ERROR';
+		    $message = 'ERROR occured while doing transaction';
+		 // If the response comes from canal then we will extract message from 
+		// Canal error
+		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
+		{ 
+			// This is a canal response extract message
+			preg_match_all('/errorLabel>(.*?)\/errorLabel>/s', $accountResponse, $messages);
+			$message = $messages[1];
+		}
 	    }
-	
-
-
-
-	// 5. Based on Canal response build havanao response and respond to havanao
-	
+	dd($message);
+	// 5. Based on Canal response build havanao response and respond to havanao	
 	$response = [
 				'transactionid' 	=> $request->transactionid,
 				'reference_number' 	=> $request->reference_number,
@@ -131,7 +136,7 @@ class ResubscriptionController extends CanalApiController
 				'status' 			=> $status,
 				'account_balance' 	=> $request->amount,
 				'customer' 			=> $request->customer,
-				'description' 		=> 'Thank you for paying '.$request->amount.'to Canal',
+				'description' 		=> $message,
 				'payment_reference' => $request->transactionid
 				];
 
