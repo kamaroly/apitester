@@ -124,7 +124,7 @@ class ResubscriptionController extends CanalApiController
 		{ 
 			// This is a canal response extract message
 			preg_match_all('/<errorLabel>(.*?)<\/errorLabel>/s', $subscriptionResponse, $messages);
-			$message = $messages[1];
+			$message = $messages[1][0];
 		}
 	    }
 	    
