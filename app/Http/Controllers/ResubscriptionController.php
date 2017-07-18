@@ -127,7 +127,7 @@ class ResubscriptionController extends CanalApiController
 			$message = $messages[1];
 		}
 	    }
-	dd($message);
+	    
 	// 5. Based on Canal response build havanao response and respond to havanao	
 	$response = [
 				'transactionid' 	=> $request->transactionid,
