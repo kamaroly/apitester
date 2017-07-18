@@ -62,6 +62,7 @@ class ResubscriptionController extends CanalApiController
 
 
 		// Check account
+	        Log::info($checkAccountRequest);
 		$accountResponse = $this->call($checkAccountRequest);
 	    	$accountResponse = htmlspecialchars_decode($accountResponse);
 
@@ -104,6 +105,7 @@ class ResubscriptionController extends CanalApiController
 		$canalRequest = str_replace('CANAL_TOKEN', $tokens[1][0], $canalRequest);
 
 		// We have check account now send resubscriptiont
+	        Log::info($canalRequest);
 		$subscriptionResponse = $this->call($canalRequest);
         
 	    	// Make sure all HTML entities are well decoded
