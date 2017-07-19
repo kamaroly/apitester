@@ -49,7 +49,7 @@ class ResubscriptionController extends CanalApiController
 		<ns1:registerAutomaticRenewal soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 			<sInXmlData xsi:type="xsd:string">
 				<![CDATA[<RegisterAutomaticRenewal
-				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><idBase>Wcgamobile</idBase><numSubscriber>account</numSubscriber><numContract>1</numContract><accountRef></accountRef><amount>'.$request->amount.'</amount><currency>RWF</currency>
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><idBase>Wcgamobile</idBase><numSubscriber>CANAL_ID</numSubscriber><numContract>1</numContract><accountRef></accountRef><amount>'.$request->amount.'</amount><currency>RWF</currency>
 				    <eTopupTransactionId></eTopupTransactionId>
 				    <operatorName>TIGO</operatorName><country>146</country>
 				    <eTopupDistributorId></eTopupDistributorId>
@@ -108,7 +108,7 @@ class ResubscriptionController extends CanalApiController
 		preg_match_all('/<numSubscriber>(.*?)<\/numSubscriber>/s', $accountResponse, 													$numSubscriber);
 
 		// use correct token from check accounts
-		$canalRequest = str_replace('account', $numSubscriber[1][0], $canalRequest);
+		$canalRequest = str_replace('CANAL_ID', $numSubscriber[1][0], $canalRequest);
 
 		// We have check account now send resubscriptiont
 	        Log::info($canalRequest);
