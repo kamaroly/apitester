@@ -35,7 +35,7 @@ Class CanalApiController extends Controller{
 		}
 		catch(RequestException $ex)
 		{
-			$canalResponse    = trim($ex->getResponse());
+			$canalResponse    = trim($ex->getMessage());
 
 		}
 		catch(ServerException $ex)
