@@ -107,7 +107,7 @@ class ResubscriptionController extends CanalApiController
 		// Extract numsubscriber from account response				
 		preg_match_all('/<numSubscriber>(.*?)<\/numSubscriber>/s', $accountResponse, 													$numSubscriber);
 
-		// use correct token from check accounts
+		// use correct numSubscriber from check accounts
 		$canalRequest = str_replace('CANAL_ID', $numSubscriber[1][0], $canalRequest);
 
 		// We have check account now send resubscriptiont
