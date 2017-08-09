@@ -16,12 +16,12 @@ Route::any('canal/checkaccount',['middleware'=>'admin','uses'=>'\App\Http\Contro
 Route::any('canal/resubscription',['middleware'=>'admin','uses'=>'\App\Http\Controllers\ResubscriptionController@resubscription']);
 
 Route::any('canal/regularization',['middleware'=>'admin','uses'=>'\App\Http\Controllers\ResubscriptionController@regularization']);
-
-Route::any('canal/renewaloffers',['middleware'=>'admin','uses'=>'\App\Http\Controllers\VerifyRenewalOffersController@renewaloffer']);
-
 	
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('offers','\App\Http\Controllers\CanaloffersController@index');
+Route::get('offers/{amount}','\App\Http\Controllers\CanaloffersController@show');
 
-
+Route::any('canal/renewaloffers','\App\Http\Controllers\RenewalofferController@differentoffer'
+	);
