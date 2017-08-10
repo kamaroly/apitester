@@ -75,7 +75,7 @@ class RenewalofferController extends CanalApiController
 				<![CDATA[<RegisterStandardRenewal
 				
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><idBase>Wcgamobile</idBase><numSubscriber>CANAL_ID</numSubscriber><numContract>1</numContract><accountRef></accountRef><amount>'.$request->amount.'</amount><currency>RWF</currency><eTopupTransactionId></eTopupTransactionId><operatorName>TIGO</operatorName><country>146</country><eTopupDistributorId></eTopupDistributorId><mainOffer>
-				   '.$offer->offer_label.'</mainOffer><duration>1</duration><optionsList></optionsList>
+				   '.$offer->offer_code.'</mainOffer><duration>1</duration><optionsList></optionsList>
 					<tokenId>CANAL_TOKEN</tokenId></RegisterStandardRenewal>]]>
 			</sInXmlData>
 		</ns1:registerStandardRenewal>
