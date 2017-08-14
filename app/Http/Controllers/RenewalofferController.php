@@ -63,6 +63,23 @@ class RenewalofferController extends CanalApiController
 
 	}
 
+	$RenewalofferController= '<soap:Envelope
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header/>
+	<soap:Body
+		xmlns:ns1="MpaymentService">
+		<ns1:verifyRenewalOffers soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+			<sInXmlData xsi:type="xsd:string">
+				<![CDATA[<VerifyRenewalOffers
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><idBase>Wcgamobile</idBase><numSubscriber>CANAL_ID</numSubscriber><numContract>1</numContract><accountRef></accountRef><operatorName>TIGO</operatorName><country>146</country><currency>RWF</currency><mainOffer>'.$offer->offer_code.'</mainOffer><duration>1</duration><tokenId>CANAL_TOKEN</tokenId><optionsList></optionsList></VerifyRenewalOffers>]]>
+			</sInXmlData>
+		</ns1:verifyRenewalOffers>
+	</soap:Body>
+</soap:Envelope>';
+
+
 	$standardrenewalRequest = '<soap:Envelope
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
