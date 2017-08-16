@@ -18,7 +18,6 @@ Class CanalApiController extends Controller{
 	public function call($requestString)	
   {
 	  $requestData['body']= $requestString;
-
 		$requestData['timeout']					= 2;
 		$requestData['headers']['Content-Type']	= 'application/xml';
 	 try

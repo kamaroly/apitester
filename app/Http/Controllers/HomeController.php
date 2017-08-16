@@ -29,9 +29,22 @@ class HomeController extends Controller
         // display related results
         switch (request()->has('q')) {
             case true:
-                $payments = Payment::where('subs_account',request()->get('q'))
+
+                $payment  = new Payment;
+
+                $payments = $payment->where('subs_account',request()->get('q'))
                                      ->orWhere('PaymentSpTxId',request()->get('q'))
                                      ->orderBy('id','DESC')->paginate(5);
+
+                // If we don't have data, then consider archive information 
+                // before displaying by changing connection to archive
+                if ($payments->count() == 0) {
+                  $payments = $payment->setConnection('havanao_archive')
+                                     ->where('subs_account',request()->get('q'))
+                                     ->orWhere('PaymentSpTxId',request()->get('q'))
+                                     ->orderBy('id','DESC')->paginate(5);  
+                }
+
                 break;
             
             default:

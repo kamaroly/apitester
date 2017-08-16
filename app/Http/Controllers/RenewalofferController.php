@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Log;
 use App\Offer;
 use Illuminate\Http\Request;
+use SimpleXMLElement;
 use App\Http\Controllers\CanalApiController ;
 
 class RenewalofferController extends CanalApiController
@@ -63,7 +64,7 @@ class RenewalofferController extends CanalApiController
 
 	}
 
-	$RenewalofferController= '<soap:Envelope
+	$VerifyRenewal= '<soap:Envelope
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -99,17 +100,17 @@ class RenewalofferController extends CanalApiController
 	</soap:Body>
 </soap:Envelope>';
 
-
+	
 		// Check account
 	    Log::info($checkAccountRequest);
 		$accountResponse = $this->call($checkAccountRequest);
-    	$accountResponse = htmlspecialchars_decode($accountResponse);
-
+    	$accountResponse = new SimpleXMLElement($accountResponse);
+    	dd($accountResponse);
 		// Make sure all HTML entities are well decode
 		Log::info($accountResponse);
 		 // 4. ANALYSE CANAL RESPONSE
 
-		if (strpos($accountResponse, '<returnCode>0</returnCode>') === FALSE) {
+		if (strpos($accountResponse, '<mainOffer>0</mainOffer>') === FALSE) {
 		// We could not find the return code of 0 which is successful
 		// return failed response to havanao from here
 		$code= '400';
@@ -118,12 +119,18 @@ class RenewalofferController extends CanalApiController
  		
 		// If the response comes from canal then we will extract message from 
 		// Canal error
-		if (strpos($accountResponse, 'errorLabel>') !== FALSE)
+		dd($accountResponse);
+
+	foreach ($accountResponse as $object) {
+
+
+		if ($object->mainoffer !== FALSE)
 		{ 
-			// This is a canal response extract message
-			preg_match_all('/errorLabel>(.*?)\/errorLabel>/s', $accountResponse, $messages);
-			$message = $messages[1];
+          
 		}
+
+	}
+		
 
 		$checkAccountResponse = [
 					'code' 		=> $code,
