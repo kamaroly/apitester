@@ -34,7 +34,7 @@ class HomeController extends Controller
 
                 $payments = $payment->where('subs_account',request()->get('q'))
                                      ->orWhere('PaymentSpTxId',request()->get('q'))
-                                     ->orderBy('id','DESC')->paginate(5);
+                                     ->orderBy('id','DESC')->paginate(20);
 
                 // If we don't have data, then consider archive information 
                 // before displaying by changing connection to archive
@@ -42,7 +42,7 @@ class HomeController extends Controller
                   $payments = $payment->setConnection('havanao_archive')
                                      ->where('subs_account',request()->get('q'))
                                      ->orWhere('PaymentSpTxId',request()->get('q'))
-                                     ->orderBy('id','DESC')->paginate(5);  
+                                     ->orderBy('id','DESC')->paginate(20);  
                 }
 
                 break;
